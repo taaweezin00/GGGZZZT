@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Decision_Tree</title>
+    <!-- ลิงก์ไปยังไฟล์ CSS -->
+    <link rel="stylesheet" type="text/css" href="show/style.css" />
+    <!-- ลิงก์ไปยังไฟล์ JavaScript -->
+    <script src="show/script.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        header h1 {
+            font-size: 28px;
+            color: #2980b9;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+
+        form {
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+            max-width: 500px;
+            width: 100%;
+        }
+
+        label {
+            display: block;
+            margin-top: 10px;
+            font-size: 18px;
+        }
+
+        input[type="text"], select {
+            width: 100%;
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #bdc3c7;
+            border-radius: 5px;
+            font-size: 16px;
+        }
+
+        input[type="submit"], .show-group-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            cursor: pointer;
+            width: 100%;
+            font-size: 18px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        input[type="submit"]:hover, .show-group-btn:hover {
+            background-color: #3498db;
+        }
+
+        .toggle-btn {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #2980b9;
+            color: white;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s ease;
+        }
+
+        .toggle-btn:hover {
+            background-color: #3498db;
+        }
+
+        .table-container {
+            margin-top: 20px;
+            max-width: 600px;
+            overflow-x: auto;
+            background-color: #ecf0f1;
+            padding: 10px;
+            border-radius: 10px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+
+        th, td {
+            padding: 10px;
+            text-align: left;
+            border: 1px solid #bdc3c7;
+        }
+
+        .prediction {
+            margin-top: 20px;
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+            font-size: 20px;
+        }
+
+        .prediction.positive {
+            background-color: #2ecc71;
+            color: white;
+        }
+
+        .prediction.negative {
+            background-color: #e74c3c;
+            color: white;
+        }
+
+        .group-names {
+            margin-top: 20px;
+            padding: 10px;
+            background-color: #ffffff;
+            border-radius: 5px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+            display: none; /* ซ่อนรายชื่อโดยเริ่มต้น */
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ทำนายภาวะสายตาสั้นด้วย<br />"Decision_Tree"</h1>
+    </header>
+
+    <main>
+        <div>
+            <form action="/predict" method="post">
+                <!-- ฟีเจอร์ที่ใช้ -->
+                <label for="Age">Age (อายุ):</label>
+                <input type="text" id="Age" name="Age" required />
+
+                <label for="Gender">Gender (เพศ):</label>
+                <select id="Gender" name="Gender" required>
+                    <option value="Male">ชาย</option>
+                    <option value="Female">หญิง</option>
+                </select>
+
+                <label for="ScreenTimeHoursPerDay">Screen Time Hours/Day (ชั่วโมงใช้หน้าจอ/วัน):</label>
+                <input type="text" id="ScreenTimeHoursPerDay" name="ScreenTimeHoursPerDay" required />
+
+                <label for="HasFamilyHistory">Has Family History (ประวัติครอบครัว):</label>
+                <select id="HasFamilyHistory" name="HasFamilyHistory" required>
+                    <option value="1">มี</option>
+                    <option value="0">ไม่มี</option>
+                </select>
+
+                <label for="OutdoorTimeHoursPerDay">Outdoor Time Hours/Day (ชั่วโมงกลางแจ้ง/วัน):</label>
+                <input type="text" id="OutdoorTimeHoursPerDay" name="OutdoorTimeHoursPerDay" required />
+
+                <input type="submit" value="Predict" />
+            </form>
+
+            <!-- ปุ่มสำหรับแสดง/ซ่อนตาราง -->
+            <button id="toggle-table-btn" class="toggle-btn">แสดงข้อมูลตาราง</button>
+
+            <!-- ปุ่มสำหรับแสดงรายชื่อสมาชิกกลุ่ม -->
+            <button class="show-group-btn" onclick="showGroupNames()">แสดงรายชื่อสมาชิกกลุ่ม</button>
+
+            {% if prediction_text %}
+            <div class="prediction {{ prediction_class }}">
+                <h2>{{ prediction_text }}</h2>
+            </div>
+            {% endif %}
+        </div>
+
+        <div>
+            <div id="table-container" class="table-container" style="display: none">
+                {% for table in tables %}
+                {{ table|safe }}
+                {% endfor %}
+            </div>
+        </div>
+
+        <!-- รายชื่อสมาชิกกลุ่ม -->
+        <div class="group-names" id="groupNames">
+            <h3>รายชื่อสมาชิกกลุ่ม:</h3>
+            <ul>
+                <li>นาย นัฐวุฒิ สมสีหา 653450109-1</li>
+                <li>ทวีศิลป์ ใจดี 653450509-5</li>
+                <li>นาย พิพิธธน พิพิธกุล 653450097-2</li>
+                <li>นาย ณภัทร สีหะวงค์ 653450508-7</li>
+            </ul>
+        </div>
+    </main>
+
+    <script>
+        // แสดง/ซ่อนตาราง
+        document.getElementById('toggle-table-btn').addEventListener('click', function () {
+            const tableContainer = document.getElementById('table-container');
+            if (tableContainer.style.display === 'none') {
+                tableContainer.style.display = 'block';
+                this.textContent = 'ซ่อนข้อมูลตาราง';
+            } else {
+                tableContainer.style.display = 'none';
+                this.textContent = 'แสดงข้อมูลตาราง';
+            }
+        });
+
+        // ฟังก์ชันแสดงรายชื่อสมาชิกกลุ่ม
+        function showGroupNames() {
+            const groupNames = document.getElementById('groupNames');
+            if (groupNames.style.display === 'none' || groupNames.style.display === '') {
+                groupNames.style.display = 'block';
+            } else {
+                groupNames.style.display = 'none';
+            }
+        }
+    </script>
+</body>
+</html>

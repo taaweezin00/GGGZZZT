@@ -1,0 +1,167 @@
+/* static/style.css */
+
+/* ธีมมืดสำหรับเว็บไซต์ */
+
+body {
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+    margin: 0;
+    background-color: #121212;
+    color: #ffffff;
+    margin: 6rem auto; /* เพิ่ม margin ด้านบนและล่าง */
+    padding: 20px; /* เพิ่ม padding รอบๆ เนื้อหา */
+  }
+  
+  header {
+    text-align: center;
+    padding: 20px;
+  }
+  
+  header h1 {
+    font-size: 2.5em;
+    margin: 0;
+  }
+  
+  main {
+    display: grid;
+    grid-template-columns: auto auto;
+    justify-content: center;
+    gap: 2rem;
+  }
+  
+  form {
+    max-width: 400px;
+    margin: 20px auto; /* เพิ่ม margin ด้านบนและล่าง */
+    background-color: #1e1e1e;
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-radius: 10px;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6); /* เพิ่มเงา */
+  }
+  
+  label {
+    margin-top: 15px;
+    font-weight: bold;
+    color: #ffffff;
+  }
+  
+  input[type="text"] {
+    width: 100%;
+    padding: 10px;
+    margin-top: 5px;
+    background-color: #2c2c2c;
+    border: none;
+    border-radius: 4px;
+    color: #ffffff;
+  }
+  
+  input[type="text"]:focus {
+    outline: none;
+    border: 1px solid #4caf50;
+  }
+  
+  input[type="submit"] {
+    width: 100%; /* ปุ่มเต็มความกว้าง */
+    padding: 12px;
+    margin-top: 20px;
+    background-color: #4caf50;
+    border: none;
+    border-radius: 8px;
+    color: #ffffff;
+    font-size: 1.1em;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; /* เพิ่ม transition */
+  }
+  
+  input[type="submit"]:hover {
+    background-color: #45a049;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.4); /* เพิ่มเงาเมื่อ hover */
+  }
+  
+  /* สไตล์สำหรับข้อความผลการทำนาย */
+  .prediction {
+    text-align: center;
+    font-size: 1em;
+    margin-top: 30px;
+    padding: 20px;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.5); /* เพิ่มเงา */
+    transition: box-shadow 0.3s ease;
+  }
+  
+  .prediction h2 {
+    margin: 0;
+  }
+  
+  /* สไตล์สำหรับผลการทำนายเป็นเบาหวาน */
+  .prediction.positive {
+    background-color: #ff5252;
+    color: #ffffff;
+  }
+  
+  /* สไตล์สำหรับผลการทำนายไม่เป็นเบาหวาน */
+  .prediction.negative {
+    background-color: #4caf50;
+    color: #ffffff;
+  }
+  .toggle-btn {
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 1.1em;
+    margin: 20px auto;
+    display: block;
+    transition: background-color 0.3s ease;
+  }
+  
+  .toggle-btn:hover {
+    background-color: #45a049;
+  }
+  
+  /* ปรับปรุงส่วน table-container */
+  .table-container {
+    max-width: 100%;
+    overflow-y: auto;
+    margin: 20px auto;
+    height: 400px;
+    border: 1px solid #333333;
+    background-color: #1e1e1e;
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.6);
+    transition: max-height 0.3s ease;
+  }
+  
+  .dataframe {
+    width: 100%;
+    border-collapse: collapse;
+  }
+  
+  .dataframe th,
+  .dataframe td {
+    padding: 8px;
+    border: 1px solid #333333;
+    text-align: center;
+  }
+  
+  .dataframe th {
+    background-color: #4caf50;
+    color: #ffffff;
+  }
+  
+  .dataframe tr:nth-child(even) {
+    background-color: #2c2c2c; /* สีที่เข้มขึ้น */
+  }
+  
+  .dataframe tr:nth-child(odd) {
+    background-color: #333333; /* สีที่อ่อนลง */
+  }
+  
+  .dataframe tr:hover {
+    background-color: #444444; /* เพิ่มสีเมื่อ hover */
+  }
+  
